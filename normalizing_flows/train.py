@@ -25,16 +25,17 @@ def main(args):
     val_loader = DataLoader(val, batch_size=args.batch_size)
     test_loader = DataLoader(test, batch_size=args.batch_size)
 
-    # Define moel
+    # Define model
     model = MAF(input_size, args.made_blocks, args.hidden_dims)
 
     # Define optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
+    
 
     # Train model
-    model.train()
     for epoch_num in tqdm(range(1, args.epoch+1)):
-        avg_loss = 0
+        model.train()
+        train_loss = 0
         for batch, _ in train_loader:
             #print("batch.shape",batch.shape # [128, 784]
             # Forward pass
@@ -46,14 +47,14 @@ def main(args):
             loss += 0.5 * batch.shape[1] * np.log(2 * math.pi)
             loss -= log_det
             loss = torch.mean(loss)
-            avg_loss += loss.item()
+            train_loss += loss.item()
 
             # Backpropagation
-            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+            optimizer.zero_grad()
 
-        avg_loss = np.sum(avg_loss) / len(train_loader)
+        avg_loss = np.sum(train_loss) / len(train_loader)
         print(f"Epoch: {epoch_num} Average loss: {avg_loss:.5f}")
 
 
