@@ -30,11 +30,10 @@ def main(args):
 
     # Define optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
-    
 
     # Train model
+    model.train()
     for epoch_num in tqdm(range(1, args.epoch+1)):
-        model.train()
         train_loss = 0
         for batch, _ in train_loader:
             #print("batch.shape",batch.shape # [128, 784]
@@ -50,9 +49,9 @@ def main(args):
             train_loss += loss.item()
 
             # Backpropagation
+            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
-            optimizer.zero_grad()
 
         avg_loss = np.sum(train_loss) / len(train_loader)
         print(f"Epoch: {epoch_num} Average loss: {avg_loss:.5f}")
