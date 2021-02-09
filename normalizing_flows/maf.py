@@ -17,10 +17,10 @@ class MAFLayer(nn.Module):
 
     def forward(self, x: Tensor) -> Tuple[Tensor, Tensor]:
         out = self.made(x.float())
-        mu, logp = torch.chunk(out, 2, dim=1)
-        u = (x - mu) * torch.exp(0.5 * logp)
+        mu, alpha = torch.chunk(out, 2, dim=1)
+        u = (x - mu) * torch.exp(-alpha)
         u = u.flip(dims=(1,)) if self.reverse else u
-        log_det = 0.5 * torch.sum(logp, dim=1)
+        log_det = -torch.sum(alpha, dim=1)
         return u, log_det
 
     def backward(self, u: Tensor) -> Tuple[Tensor, Tensor]:
@@ -29,9 +29,9 @@ class MAFLayer(nn.Module):
         for dim in range(self.dim):
             out = self.made(x)
             mu, logp = torch.chunk(out, 2, dim=1)
-            mod_logp = torch.clamp(-0.5 * logp, max=10)
+            mod_logp = torch.clamp(logp, max=10)
             x[:, dim] = mu[:, dim] + u[:, dim] * torch.exp(mod_logp[:, dim])
-        log_det = torch.sum(mod_logp, axis=1)
+        log_det = -torch.sum(mod_logp, axis=1)
         return x, log_det
 
 
