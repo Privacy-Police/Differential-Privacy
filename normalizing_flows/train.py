@@ -3,13 +3,22 @@ import math
 
 import numpy as np
 from tqdm import tqdm
+import wandb
 import torch
 from torch.utils.data import DataLoader
 
 import flows as fnn
 from datasets import get_datasets, get_input_size
 
+
+wandb.init(project='privacy_police')
+config = wandb.config
+
 def main(args):
+    # Pass config to wandb
+    for key, value in vars(args).items():
+        setattr(config, key, value)
+
     # Get Dataset
     dataset = get_datasets(args.dataset_name, args.seed)
     input_size = get_input_size(args.dataset_name)
@@ -50,6 +59,7 @@ def main(args):
 
         avg_loss = np.sum(train_loss) / len(train_loader)
         print(f"Epoch: {epoch_num} Average log likelihood: {-avg_loss:.5f}")
+        wandb.log({'epoch': epoch_num, 'average log likelihood': -avg_loss})
 
 
 if __name__ == "__main__":
