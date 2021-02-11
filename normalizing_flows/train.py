@@ -59,14 +59,14 @@ def main(args):
 
         avg_loss = np.sum(train_loss) / len(train_loader)
         print(f"Epoch: {epoch_num} Average log likelihood: {-avg_loss:.5f}")
-        torch.save(model.state_dict(), "my_trained_maf.pt")
+        torch.save(model, "my_trained_maf.pt")
         wandb.log({'epoch': epoch_num, 'average log likelihood': -avg_loss})
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
     parser.add_argument('--dataset_name', default='mnist', type=str, help="Dataset name to train on")
-    parser.add_argument('--epoch', default=15, type=int, help="number of epochs to train")
+    parser.add_argument('--epoch', default=1000, type=int, help="number of epochs to train")
     parser.add_argument('--seed', default=42, type=int, help='Random seed for reproducibility')
     parser.add_argument('--batch_size', default=128, type=int, help="Batch size for training model")
     parser.add_argument('--learning_rate', default=1e-4, type=float, help="Learning rate for the optimizer")
