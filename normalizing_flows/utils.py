@@ -3,7 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 
-def get_distribution_diagnostic_plot(model, input, model_name = 'maf', ncols = 6, nrows = 4):
+def get_distribution_diagnostic_plot(model_path, input, model_name = 'maf', ncols = 6, nrows = 4):
+  model = torch.load(model_path)
+  model.to("cuda")
   u = model(input.to('cuda'))[0].detach().cpu().numpy()
 
   fig, axes = plt.subplots(
@@ -19,7 +21,11 @@ def get_distribution_diagnostic_plot(model, input, model_name = 'maf', ncols = 6
   plt.savefig("figs/" + model_name + "_marginal.pdf", bbox_inches="tight", dpi=300)
 
 
-def get_scattered_diagnostic_plot(model, input, model_name = 'maf', ncols = 6, nrows = 4):
+def get_scattered_diagnostic_plot(model_path, input, model_name = 'maf', ncols = 6, nrows = 4):
+  model = torch.load(model_path)
+  model.to("cuda")
+  u = model(input.to('cuda'))[0].detach().cpu().numpy()
+  
   fig, axes = plt.subplots(
         ncols=ncols, nrows=nrows, sharex=True, sharey=True, figsize=(16, 10)
     )
