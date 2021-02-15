@@ -19,6 +19,10 @@ def main(args):
     for key, value in vars(args).items():
        setattr(config, key, value)
 
+    # Use CUDA GPU if available
+    gpu_available = args.use_cuda and torch.cuda.is_available()
+    device = torch.device("cuda" if gpu_available else "cpu")
+
     # Get Dataset
     dataset = get_datasets(args.dataset_name, args.seed)
     input_size = get_input_size(args.dataset_name)
@@ -38,15 +42,18 @@ def main(args):
             fnn.Reverse(input_size)
         ]
     model = fnn.FlowSequential(*modules)
+    model.to(device)
 
     # Define optimizer
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
-    
+
     # Train model
     model.train()
     for epoch_num in tqdm(range(1, args.epoch+1)):
+        # Train for 1 epoch
         train_loss = 0
         for batch, _ in train_loader:
+            batch = batch.to(device)
             optimizer.zero_grad()
 
             # Loss = Negative Log Likelihood
@@ -58,13 +65,27 @@ def main(args):
             optimizer.step()
 
         avg_loss = np.sum(train_loss) / len(train_loader)
-        print(f"Epoch: {epoch_num} Average log likelihood: {-avg_loss:.5f}")
+        print(f"Epoch: {epoch_num} Average train log likelihood: {-avg_loss:.5f}")
         torch.save(model, "my_trained_maf.pt")
-        wandb.log({'epoch': epoch_num, 'average log likelihood': -avg_loss})
 
+        # Validation
+        val_loss = 0
+        for batch, _ in val_loader:
+            batch = batch.to(device)
+            val_loss += -model.log_probs(batch).mean().item()
+        avg_val_loss = np.sum(val_loss) / len(val_loader)
+        print(f"Epoch: {epoch_num} Average validation log likelihood: {-avg_val_loss:.5f}")
+
+        # Log statistics to wandb
+        wandb.log({
+            'epoch': epoch_num,
+            'average log likelihood (train)': -avg_loss,
+            'average log likelihood (validation)': -avg_val_loss
+        })
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
+    parser.add_argument('--use_cuda', default=True, type=bool, help="Whether to use GPU or CPU. True for GPU")
     parser.add_argument('--dataset_name', default='mnist', type=str, help="Dataset name to train on")
     parser.add_argument('--epoch', default=1000, type=int, help="number of epochs to train")
     parser.add_argument('--seed', default=42, type=int, help='Random seed for reproducibility')
