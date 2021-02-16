@@ -2,7 +2,6 @@ import argparse
 import math
 
 import numpy as np
-from tqdm import tqdm
 import wandb
 import torch
 from torch.utils.data import DataLoader
@@ -51,7 +50,7 @@ def main(args):
     best_validation_loss = float('inf')
     consecutive_bad_count = 0
     model.train()
-    for epoch_num in tqdm(range(1, args.epoch+1)):
+    for epoch_num in range(1, args.epoch+1):
         # Train for 1 epoch
         train_loss = 0
         for batch, _ in train_loader:
@@ -65,9 +64,7 @@ def main(args):
             # Backpropagation
             loss.backward()
             optimizer.step()
-
         avg_loss = np.sum(train_loss) / len(train_loader)
-        print(f"Epoch: {epoch_num} Average train log likelihood in nats: {-avg_loss:.5f}")
 
         # Validation
         val_loss = 0
@@ -75,9 +72,10 @@ def main(args):
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
-        print(f"Epoch: {epoch_num} Average validation log likelihood in nats: {-avg_val_loss:.5f}")
 
-        # Log statistics to wandb
+        # Log statistics to wandb and stdout
+        description = f'Epoch {epoch_num:3} | train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f}'
+        print(description)
         wandb.log({
             'epoch': epoch_num,
             'average log likelihood in nats (train)': -avg_loss,
