@@ -48,6 +48,8 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.weight_decay)
 
     # Train model
+    best_validation_loss = float('inf')
+    consecutive_bad_count = 0
     model.train()
     for epoch_num in tqdm(range(1, args.epoch+1)):
         # Train for 1 epoch
@@ -65,8 +67,7 @@ def main(args):
             optimizer.step()
 
         avg_loss = np.sum(train_loss) / len(train_loader)
-        print(f"Epoch: {epoch_num} Average train log likelihood: {-avg_loss:.5f}")
-        torch.save(model, "my_trained_maf.pt")
+        print(f"Epoch: {epoch_num} Average train log likelihood in nats: {-avg_loss:.5f}")
 
         # Validation
         val_loss = 0
@@ -74,17 +75,30 @@ def main(args):
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
-        print(f"Epoch: {epoch_num} Average validation log likelihood: {-avg_val_loss:.5f}")
+        print(f"Epoch: {epoch_num} Average validation log likelihood in nats: {-avg_val_loss:.5f}")
 
         # Log statistics to wandb
         wandb.log({
             'epoch': epoch_num,
-            'average log likelihood (train)': -avg_loss,
-            'average log likelihood (validation)': -avg_val_loss
+            'average log likelihood in nats (train)': -avg_loss,
+            'average log likelihood in nats (validation)': -avg_val_loss
         })
+
+        # Early stopping
+        if avg_val_loss < best_validation_loss:
+            best_validation_loss = avg_val_loss
+            consecutive_bad_count = 0
+            torch.save(model, "my_trained_maf.pt") # Save best model
+        else:
+            consecutive_bad_count += 1
+        if consecutive_bad_count >= args.patience:
+            print(f'No improvement for {args.patience} epochs. Early stopping...')
+            break
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
+    parser.add_argument('--patience', default=30, type=int, help="How many epochs to tolerate for early stopping")
     parser.add_argument('--use_cuda', default=True, type=bool, help="Whether to use GPU or CPU. True for GPU")
     parser.add_argument('--dataset_name', default='mnist', type=str, help="Dataset name to train on")
     parser.add_argument('--epoch', default=1000, type=int, help="number of epochs to train")
