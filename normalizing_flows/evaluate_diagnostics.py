@@ -1,5 +1,5 @@
 from datasets import get_datasets, get_input_size
-from diagnostics import get_distribution_diagnostic_plot, get_scattered_diagnostic_plot
+from utils import get_distribution_diagnostic_plot, get_scattered_diagnostic_plot
 from torch.utils.data import DataLoader
 import flows
 
