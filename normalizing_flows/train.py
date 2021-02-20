@@ -103,7 +103,7 @@ def main(args):
         if avg_val_loss < best_validation_loss:
             best_validation_loss = avg_val_loss
             consecutive_bad_count = 0
-            torch.save(model, args.dataset_name + "_trained_model.pt") # Save best model
+            torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt") # Save best model
         else:
             consecutive_bad_count += 1
         if consecutive_bad_count >= args.patience:
