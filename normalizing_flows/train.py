@@ -7,8 +7,7 @@ import torch
 from torch.utils.data import DataLoader
 
 import flows as fnn
-from datasets import get_datasets, get_input_size
-
+from dataset_loader import get_datasets, get_input_size
 
 wandb.init(project='privacy_police')
 config = wandb.config
@@ -53,7 +52,20 @@ def main(args):
     for epoch_num in range(1, args.epoch+1):
         # Train for 1 epoch
         train_loss = 0
-        for batch, _ in train_loader:
+        if args.dataset_name == 'mnist':
+          for batch, _ in train_loader:
+            batch = batch.to(device)
+            optimizer.zero_grad()
+
+            # Loss = Negative Log Likelihood
+            loss = -model.log_probs(batch).mean()
+            train_loss += loss.item()
+
+            # Backpropagation
+            loss.backward()
+            optimizer.step()
+        else:
+          for batch in train_loader:
             batch = batch.to(device)
             optimizer.zero_grad()
 
@@ -68,7 +80,12 @@ def main(args):
 
         # Validation
         val_loss = 0
-        for batch, _ in val_loader:
+        if args.dataset_name == 'mnist':
+          for batch, _ in val_loader:
+            batch = batch.to(device)
+            val_loss += -model.log_probs(batch).mean().item()
+        else:
+          for batch in val_loader:
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
@@ -86,7 +103,7 @@ def main(args):
         if avg_val_loss < best_validation_loss:
             best_validation_loss = avg_val_loss
             consecutive_bad_count = 0
-            torch.save(model, "my_trained_maf.pt") # Save best model
+            torch.save(model, args.dataset_name + "_trained_model.pt") # Save best model
         else:
             consecutive_bad_count += 1
         if consecutive_bad_count >= args.patience:
