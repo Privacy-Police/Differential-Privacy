@@ -1,0 +1,47 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.18
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.7.7
+    t:
+      1:
+      - 1
+      2:
+      - 1
+      4: 3.7.7
+      5: 0.10.18
+batch_size:
+  desc: null
+  value: 128
+dataset_name:
+  desc: null
+  value: mnist
+epoch:
+  desc: null
+  value: 1000
+hidden_dims:
+  desc: null
+  value: 512
+learning_rate:
+  desc: null
+  value: 0.0001
+made_blocks:
+  desc: null
+  value: 5
+patience:
+  desc: null
+  value: 30
+seed:
+  desc: null
+  value: 42
+use_cuda:
+  desc: null
+  value: true
+weight_decay:
+  desc: null
+  value: 1.0e-06

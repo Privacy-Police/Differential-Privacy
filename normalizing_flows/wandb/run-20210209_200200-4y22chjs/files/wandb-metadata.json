@@ -1,0 +1,22 @@
+{
+    "os": "Darwin-19.6.0-x86_64-i386-64bit",
+    "python": "3.7.7",
+    "heartbeatAt": "2021-02-10T01:02:01.597124",
+    "startedAt": "2021-02-10T01:02:00.213194",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "codePath": "normalizing_flows/train.py",
+    "program": "train.py",
+    "git": {
+        "remote": "https://github.com/Privacy-Police/Differential-Privacy.git",
+        "commit": "a2b79f914e5212025c5accd177c1266b605ed39b"
+    },
+    "email": "mrathod@uw.edu",
+    "root": "/Users/mansirathod/Documents/Github_Repository/Differential-Privacy",
+    "host": "Mansis-MacBook-Pro.local",
+    "username": "mansirathod",
+    "executable": "/Users/mansirathod/anaconda3/bin/python"
+}
