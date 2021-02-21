@@ -3,7 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import torch
 
-def get_distribution_diagnostic_plot(model_path, input, model_name = 'maf', ncols = 6, nrows = 4):
+import warnings
+warnings.filterwarnings("ignore")
+
+def get_distribution_diagnostic_plot(model_path, input, data_name = 'MNIST', model_name = 'maf', ncols = 6, nrows = 4):
   model = torch.load(model_path)
   model.to("cuda")
   u = model(input.to('cuda'))[0].detach().cpu().numpy()
@@ -17,11 +20,12 @@ def get_distribution_diagnostic_plot(model_path, input, model_name = 'maf', ncol
     sns.distplot(u[:, dim1], ax=ax, color="darkorange")
     ax.set_xlabel("dim: " + str(dim1), size=14)
     ax.set_xlim(-5, 5)
-  plt.savefig("figs/" + model_name + "_marginal.png", bbox_inches="tight", dpi=300)
-  plt.savefig("figs/" + model_name + "_marginal.pdf", bbox_inches="tight", dpi=300)
+  fig.suptitle("Distribution plot for " + data_name + " Dataset", fontsize = 13)
+  plt.savefig("figs/" + model_name + "_" + data_name + "_marginal.png", dpi=300)
+  plt.savefig("figs/" + model_name + "_" + data_name + "_marginal.pdf", dpi=300)
 
 
-def get_scattered_diagnostic_plot(model_path, input, model_name = 'maf', ncols = 6, nrows = 4):
+def get_scattered_diagnostic_plot(model_path, input, data_name = 'MNIST', model_name = 'maf', ncols = 6, nrows = 4):
   model = torch.load(model_path)
   model.to("cuda")
   u = model(input.to('cuda'))[0].detach().cpu().numpy()
@@ -39,5 +43,6 @@ def get_scattered_diagnostic_plot(model_path, input, model_name = 'maf', ncols =
         ax.set_xlim(-8, 8)
         ax.set_ylim(-8, 8)
         ax.set_aspect(1)
-  plt.savefig("figs/" + model_name + "_scatter.png", bbox_inches="tight", dpi=300)
-  plt.savefig("figs/" + model_name + "_scatter.pdf", bbox_inches="tight", dpi=300)
+  fig.suptitle("Scatter plot for " + data_name + " Dataset", fontsize = 13)
+  plt.savefig("figs/" + model_name + "_" + data_name + "_scatter.png", dpi=300)
+  plt.savefig("figs/" + model_name + "_" + data_name + "_scatter.pdf", dpi=300)
