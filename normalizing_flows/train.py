@@ -103,13 +103,13 @@ def main(args):
         if avg_val_loss < best_validation_loss:
             best_validation_loss = avg_val_loss
             consecutive_bad_count = 0
-            torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt") # Save best model
+            #torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt") # Save best model
         else:
             consecutive_bad_count += 1
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-
+    torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt")    
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
