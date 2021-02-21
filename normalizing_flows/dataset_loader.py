@@ -2,9 +2,11 @@ import torch
 from torch.utils.data import random_split
 from torchvision import transforms
 from torchvision.datasets import MNIST
-import adult
-import pums
-import power
+from Datasets_EDA.Adult import adult
+from Datasets_EDA.PUMS import pums
+# from Datasets_EDA.Adult import adult
+# import pums
+from Datasets_EDA.Power import power
 
 
 def get_mnist_datasets(random_seed, alpha=1e-6):

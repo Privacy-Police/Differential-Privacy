@@ -8,16 +8,16 @@ from torch.utils.data import DataLoader
 from opacus import PrivacyEngine
 
 import flows as fnn
-from datasets import get_datasets, get_input_size
+from dataset_loader import get_datasets, get_input_size
 
 
-wandb.init(project='privacy_police')
-config = wandb.config
+#wandb.init(project='privacy_police')
+#config = wandb.configx
 
 def main(args):
     # Pass config to wandb
-    for key, value in vars(args).items():
-       setattr(config, key, value)
+   # for key, value in vars(args).items():
+   #    setattr(config, key, value)
 
     # Use CUDA GPU if available
     gpu_available = args.use_cuda and torch.cuda.is_available()
