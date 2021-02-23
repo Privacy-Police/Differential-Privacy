@@ -1,5 +1,6 @@
 import argparse
 import math
+import time
 
 import numpy as np
 import wandb
@@ -50,6 +51,7 @@ def main(args):
     consecutive_bad_count = 0
     model.train()
     for epoch_num in range(1, args.epoch+1):
+        start = time.time()
         # Train for 1 epoch
         train_loss = 0
         if args.dataset_name == 'mnist':
@@ -89,9 +91,11 @@ def main(args):
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
-
+        
+        end = time.time()
+        duration = (end - start)/60
         # Log statistics to wandb and stdout
-        description = f'Epoch {epoch_num:3} | train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f}'
+        description = f'Epoch {epoch_num:3} | time: {duration:12.5f}| train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f}'
         print(description)
         wandb.log({
             'epoch': epoch_num,

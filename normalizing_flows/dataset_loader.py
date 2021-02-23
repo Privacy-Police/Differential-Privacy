@@ -24,15 +24,21 @@ def get_mnist_datasets(random_seed, alpha=1e-6):
     return train, val, test
 
 def get_adult_datasets(random_seed):
+    print("Loading Adult dataset...")
     adult_dataset = adult.AdultDataset()
+    print("Adult dataset has been loaded!")
     return adult_dataset.train.x, adult_dataset.val.x, adult_dataset.test.x
     
 def get_pums_datasets(random_seed):
+    print("Loading PUMS dataset...")
     pums_dataset = pums.PUMSDataset()
+    print("PUMS dataset has been loaded!")
     return pums_dataset.train.x, pums_dataset.val.x, pums_dataset.test.x
     
 def get_power_datasets(random_seed):
+    print("Loading POWER dataset...")
     power_dataset = power.PowerDataset()
+    print("POWER dataset has been loaded!")
     return power_dataset.train.x, power_dataset.val.x, power_dataset.test.x
 
 def get_datasets(dataset_name, random_seed):
