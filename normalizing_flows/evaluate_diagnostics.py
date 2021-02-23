@@ -17,7 +17,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
+    parser = argparse.ArgumentParser(description="Training script to train differentially private normalizing flows model")
     parser.add_argument('--data_name', default='mnist', type=str, help="Name of dataset used in model")
     parser.add_argument('--model_path', default="./saved_models/mnist_trained_model.pt", type=str, help="Path to trained model")
     args = parser.parse_args()
