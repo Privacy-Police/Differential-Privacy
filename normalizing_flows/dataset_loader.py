@@ -74,3 +74,20 @@ def get_input_size(dataset_name):
         raise ValueError(err_msg)
 
     return mapping[dataset_name]
+
+def get_adult_stats():
+    return adult.AdultDataset().get_stats()
+  
+def get_dataset_stats(dataset_name):
+    """
+    Returns the mean, var of dataset
+    """
+    dataset_name = dataset_name.lower()
+    mapping = {
+        'adult': get_adult_stats
+    }
+    if dataset_name not in mapping:
+        err_msg = f"Unknown dataset '{dataset_name}'. Please choose one in {list(mapping.keys())}."
+        raise ValueError(err_msg)
+
+    return mapping[dataset_name]()

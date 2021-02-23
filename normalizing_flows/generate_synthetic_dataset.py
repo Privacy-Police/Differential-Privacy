@@ -3,7 +3,7 @@ import argparse
 import numpy as np
 import pandas as pd
 import torch
-from dataset_loader import get_input_size
+from dataset_loader import get_input_size, get_dataset_stats
 import flows as fnn
 
 def main(args):
@@ -32,14 +32,18 @@ def main(args):
                 inputs = y
             else:
                 raise ValueError("Unknown module type in the flow: {0}".format(type(module)))
-    synth_data_df = inputs.detach().cpu().numpy()
-    print(synth_data_df)
-    pd.DataFrame(synth_data_df).to_csv('synth_data/synth_'+args.dataset_name + '.csv')
+    normalized_data = inputs.detach().cpu().numpy()
+    mu, s = get_dataset_stats(args.dataset_name)
+    print(mu, s)
+    print("--------------------")
+    data = (normalized_data * s) + mu
+    print(data)
+    pd.DataFrame(data).to_csv('synth_data/synth_'+args.dataset_name + '.csv')
       
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script to generate synthetic dataset")
     parser.add_argument('--use_cuda', default=True, type=bool, help="Whether to use GPU or CPU. True for GPU")
-    parser.add_argument('--dataset_name', default='mnist', type=str, help="Dataset name to train on")
+    parser.add_argument('--dataset_name', type=str, required=True, help="Dataset name to train on")
     parser.add_argument('--n_samples', default=10, type=int, help="Number of rows of synthetic data to be generated")
     parser.add_argument('--model_path', default='./saved_models/mnist_trained_model.pt', type=str, help='File path to the saved model')
     args = parser.parse_args()
