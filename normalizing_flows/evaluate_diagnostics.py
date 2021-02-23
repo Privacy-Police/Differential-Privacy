@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import flows
 
 def main(args): 
-  dataset = get_datasets("adult", 42)
+  dataset = get_datasets(args.data_name, 42)
   train, val, test = dataset
   train_loader = DataLoader(train, batch_size=100)
   val_loader = DataLoader(val, batch_size=100)
@@ -18,6 +18,7 @@ def main(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")
+    parser.add_argument('--data_name', default='mnist', type=str, help="Name of dataset used in model")
     parser.add_argument('--model_path', default="./saved_models/mnist_trained_model.pt", type=str, help="Path to trained model")
     args = parser.parse_args()
     main(args)
