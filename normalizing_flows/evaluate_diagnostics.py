@@ -6,7 +6,7 @@ from torch.utils.data import DataLoader
 import flows
 
 def main(args): 
-  dataset = get_datasets("mnist", 42)
+  dataset = get_datasets("adult", 42)
   train, val, test = dataset
   train_loader = DataLoader(train, batch_size=100)
   val_loader = DataLoader(val, batch_size=100)

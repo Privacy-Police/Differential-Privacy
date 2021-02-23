@@ -13,7 +13,7 @@ class AdultDataset:
             self.N = self.x.shape[0]
 
     def __init__(self):
-        file="adult_cleaned.csv"
+        file="datasets/adult_cleaned.csv"
         trn, val, tst = load_data_normalised(file)
 
         self.train = self.Data(trn)

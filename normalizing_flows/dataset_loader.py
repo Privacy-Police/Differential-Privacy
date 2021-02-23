@@ -59,7 +59,7 @@ def get_input_size(dataset_name):
     dataset_name = dataset_name.lower()
     mapping = {
         'mnist': 28 * 28,
-        'adult': 7,
+        'adult': 6,
         'pums': 4,
         'power': 8 
     }
