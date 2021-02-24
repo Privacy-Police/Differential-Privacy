@@ -31,6 +31,13 @@ class AdultDataset:
         util.plot_hist_marginals(data_split.x)
         plt.show()
 
+    def get_stats(self):
+      file="datasets/adult_cleaned.csv"
+      trn, val, test = load_data(file)
+      data = np.vstack((trn, val))
+      mu = data.mean(axis=0)
+      s = data.std(axis=0)
+      return mu, s
 
 def load_data(root_path):
     data = np.genfromtxt(root_path, delimiter=',', skip_header=1)

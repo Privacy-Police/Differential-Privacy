@@ -1,5 +1,6 @@
 import argparse
 import math
+import time
 
 import numpy as np
 import wandb
@@ -9,15 +10,16 @@ from opacus import PrivacyEngine
 
 import flows as fnn
 from dataset_loader import get_datasets, get_input_size
+import patch_opacus
 
 
-#wandb.init(project='privacy_police')
-#config = wandb.configx
+wandb.init(project='privacy_police')
+config = wandb.config
 
 def main(args):
     # Pass config to wandb
-   # for key, value in vars(args).items():
-   #    setattr(config, key, value)
+    for key, value in vars(args).items():
+        setattr(config, key, value)
 
     # Use CUDA GPU if available
     gpu_available = args.use_cuda and torch.cuda.is_available()
@@ -63,6 +65,7 @@ def main(args):
     consecutive_bad_count = 0
     model.train()
     for epoch_num in range(1, args.epoch+1):
+        start = time.time()
         # Train for 1 epoch
         train_loss = 0
         for batch, _ in train_loader:
@@ -85,12 +88,15 @@ def main(args):
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
 
+        end = time.time()
+        duration = (end-start)/60
+        
         if args.enable_dp:
           epsilon, best_alpha = optimizer.privacy_engine.get_privacy_spent(args.delta)
         else:
           epsilon, best_alpha = None
         # Log statistics to wandb and stdout
-        description = f'Epoch {epoch_num:3} | train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {-epsilon:12.5f} | best alpha: {-best_alpha:12.5f}'
+        description = f'Epoch {epoch_num:3} | duration: {duration:12.5f}| train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {epsilon:12.5f} | best alpha: {best_alpha:12.5f}'
         print(description)
         wandb.log({
             'epoch': epoch_num,
