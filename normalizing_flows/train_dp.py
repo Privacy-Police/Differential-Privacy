@@ -91,7 +91,7 @@ def main(args):
         else:
           epsilon, best_alpha = None
         # Log statistics to wandb and stdout
-        description = f'Epoch {epoch_num:3} | train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {-epsilon:12.5f} | best alpha: {-best_alpha:12.5f}'
+        description = f'Epoch {epoch_num:3} | train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {epsilon:12.5f} | best alpha: {best_alpha:12.5f}'
         print(description)
         wandb.log({
             'epoch': epoch_num,

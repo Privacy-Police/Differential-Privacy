@@ -10,7 +10,10 @@ def main(args):
     n_dims = get_input_size(args.dataset_name)
     inputs = torch.Tensor(args.n_samples, n_dims).normal_().to('cuda')
     model = torch.load(args.model_path)
-    model.to("cuda")
+    
+    gpu_available = args.use_cuda and torch.cuda.is_available()
+    device = torch.device("cuda" if gpu_available else "cpu")
+    model.to(device)
     with torch.no_grad():
         for module in reversed(model._modules.values()):
             if isinstance(module, fnn.Reverse):
