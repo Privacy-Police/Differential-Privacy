@@ -13,7 +13,7 @@ class PUMSDataset:
             self.N = self.x.shape[0]
 
     def __init__(self):
-        file="pums_cleaned.csv"
+        file="datasets/pums_cleaned.csv"
         trn, val, tst = load_data_normalised(file)
 
         self.train = self.Data(trn)
