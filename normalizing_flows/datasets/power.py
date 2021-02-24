@@ -14,7 +14,7 @@ class PowerDataset:
             self.N = self.x.shape[0]
 
     def __init__(self):
-        file="data.npy"
+        file="power_cleaned.npy"
         trn, val, tst = load_data_normalised(file)
 
         self.train = self.Data(trn)
