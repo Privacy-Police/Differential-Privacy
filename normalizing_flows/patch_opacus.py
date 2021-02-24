@@ -23,17 +23,11 @@ def _compute_masked_linear_grad_sample(layer, A, B, batch_dim=0) -> None:
         B: Backpropagations (Tensor)
         batch_dim: Batch dimension position (int)
     """
-    #print('A.shape', A.shape)
-    #print('B.shape', B.shape)
-
     gs = torch.einsum("n...i,n...j->n...ij", B, A)
-    #print('gs.shape', gs.shape)
     _create_or_extend_grad_sample(
         layer.linear.weight, torch.einsum("n...ij->nij", gs), batch_dim
     )
-    #print('gs_after.shape', torch.einsum("n...ij->nij", gs).shape)
     if layer.linear.bias is not None:
-
         _create_or_extend_grad_sample(
             layer.linear.bias,
             torch.einsum("n...k->nk", B),
