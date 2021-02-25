@@ -68,7 +68,20 @@ def main(args):
         start = time.time()
         # Train for 1 epoch
         train_loss = 0
-        for batch, _ in train_loader:
+        if args.dataset_name == 'mnist':
+          for batch, _ in train_loader:
+            batch = batch.to(device)
+            optimizer.zero_grad()
+
+            # Loss = Negative Log Likelihood
+            loss = -model.log_probs(batch).mean()
+            train_loss += loss.item()
+
+            # Backpropagation
+            loss.backward()
+            optimizer.step()
+        else:
+          for batch in train_loader:
             batch = batch.to(device)
             optimizer.zero_grad()
 
@@ -83,7 +96,12 @@ def main(args):
 
         # Validation
         val_loss = 0
-        for batch, _ in val_loader:
+        if args.dataset_name == 'mnist':
+          for batch, _ in val_loader:
+            batch = batch.to(device)
+            val_loss += -model.log_probs(batch).mean().item()
+        else:
+          for batch in val_loader:
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
@@ -116,6 +134,7 @@ def main(args):
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
+    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")            
 
 
 if __name__ == "__main__":
