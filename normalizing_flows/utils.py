@@ -6,10 +6,14 @@ import torch
 import warnings
 warnings.filterwarnings("ignore")
 
+gpu_available = torch.cuda.is_available()
+device = "cuda" if gpu_available else "cpu"
+
 def get_distribution_diagnostic_plot(model_path, input, data_name = 'MNIST', model_name = 'maf', ncols = 6, nrows = 4):
-  model = torch.load(model_path)
-  model.to("cuda")
-  u = model(input.to('cuda'))[0].detach().cpu().numpy()
+  model = torch.load(model_path, map_location=torch.device(device))
+
+  model.to(device)
+  u = model(input.to(device))[0].detach().cpu().numpy()
 
   fig, axes = plt.subplots(
         ncols=ncols, nrows=nrows, sharex=True, sharey=True, figsize=(16, 10)
@@ -26,9 +30,9 @@ def get_distribution_diagnostic_plot(model_path, input, data_name = 'MNIST', mod
 
 
 def get_scattered_diagnostic_plot(model_path, input, data_name = 'MNIST', model_name = 'maf', ncols = 6, nrows = 4):
-  model = torch.load(model_path)
-  model.to("cuda")
-  u = model(input.to('cuda'))[0].detach().cpu().numpy()
+  model = torch.load(model_path, map_location=torch.device(device))
+  model.to(device)
+  u = model(input.to(device))[0].detach().cpu().numpy()
   
   fig, axes = plt.subplots(
         ncols=ncols, nrows=nrows, sharex=True, sharey=True, figsize=(16, 10)
