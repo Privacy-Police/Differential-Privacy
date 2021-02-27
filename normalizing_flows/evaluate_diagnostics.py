@@ -11,7 +11,10 @@ def main(args):
   train_loader = DataLoader(train, batch_size=100)
   val_loader = DataLoader(val, batch_size=100)
   test_loader = DataLoader(test, batch_size=100)
-  data = next(iter(test_loader))[0]
+  if args.data_name == "mnist":
+    data = next(iter(test_loader))[0]
+  else:
+    data = next(iter(test_loader))
   get_distribution_diagnostic_plot(args.model_path, data)
   get_scattered_diagnostic_plot(args.model_path, data)
 
