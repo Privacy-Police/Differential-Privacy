@@ -128,13 +128,14 @@ def main(args):
         if avg_val_loss < best_validation_loss:
             best_validation_loss = avg_val_loss
             consecutive_bad_count = 0
-            torch.save(model, "my_trained_maf.pt") # Save best model
+            #torch.save(model, "my_trained_maf.pt") # Save best model
         else:
             consecutive_bad_count += 1
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")            
+    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")   
+    print("Model saved successfully in saved_models/" + args.dataset_name + "_trained_dp_model.pt")
 
 
 if __name__ == "__main__":
