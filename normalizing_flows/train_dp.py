@@ -31,9 +31,9 @@ def main(args):
 
     # Make dataloader
     train, val, test = dataset
-    train_loader = DataLoader(train, batch_size=args.batch_size)
-    val_loader = DataLoader(val, batch_size=args.batch_size)
-    test_loader = DataLoader(test, batch_size=args.batch_size)
+    train_loader = DataLoader(train, batch_size=args.batch_size, drop_last = True)
+    val_loader = DataLoader(val, batch_size=args.batch_size, drop_last = True)
+    test_loader = DataLoader(test, batch_size=args.batch_size, drop_last = True)
 
     # Define model
     modules = []
