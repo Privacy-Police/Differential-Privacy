@@ -1,6 +1,5 @@
 import numpy as np
 import pandas as pd
-from dataset_loader import get_datasets, get_input_size
 # from datasets import adult
 # from datasets import pums
 # from datasets import power
@@ -47,7 +46,7 @@ power = np.load('datasets/power_cleaned.npy')
 power = pd.DataFrame(power)
 print(power.shape)
 ## Sampling 3k rows with fixed seed
-power_sf = pums.sample(n=3000, replace=False, random_state=42)
+power_sf = power.sample(n=3000, replace=False, random_state=42)
 power_sf.to_csv('datasets/power_subset.csv')
 print(power_sf.shape)
 print('POWER Dataset is Subsetted')
