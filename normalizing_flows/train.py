@@ -113,7 +113,8 @@ def main(args):
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-    torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt")    
+    torch.save(model, "saved_models/" + args.dataset_name + "_trained_model.pt") 
+    print("Model saved successfully to ", "saved_models/" + args.dataset_name + "_trained_model.pt")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Training script to train differentially private normalizigng flows model")

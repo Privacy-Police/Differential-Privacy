@@ -7,12 +7,14 @@ from dataset_loader import get_input_size, get_dataset_stats
 import flows as fnn
 
 def main(args):
-    n_dims = get_input_size(args.dataset_name)
-    inputs = torch.Tensor(args.n_samples, n_dims).normal_().to('cuda')
-    model = torch.load(args.model_path)
-    
+
     gpu_available = args.use_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if gpu_available else "cpu")
+    
+    n_dims = get_input_size(args.dataset_name)
+    inputs = torch.Tensor(args.n_samples, n_dims).normal_().to(device)
+    model = torch.load(args.model_path)
+    
     model.to(device)
     with torch.no_grad():
         for module in reversed(model._modules.values()):
@@ -37,11 +39,12 @@ def main(args):
                 raise ValueError("Unknown module type in the flow: {0}".format(type(module)))
     normalized_data = inputs.detach().cpu().numpy()
     mu, s = get_dataset_stats(args.dataset_name)
-    print(mu, s)
+    print("Mean and stdev: " , mu, s)
     print("--------------------")
     data = (normalized_data * s) + mu
     print(data)
     pd.DataFrame(data).to_csv('synth_data/synth_'+args.dataset_name + '.csv')
+    print("Data successfully saved to ", 'synth_data/synth_'+args.dataset_name + '.csv')
       
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script to generate synthetic dataset")
