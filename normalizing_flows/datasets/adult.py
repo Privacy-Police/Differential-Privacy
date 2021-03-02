@@ -13,7 +13,7 @@ class AdultDataset:
             self.N = self.x.shape[0]
 
     def __init__(self):
-        file="datasets/adult_cleaned.csv"
+        file="datasets/adult_subset.csv"
         trn, val, tst = load_data_normalised(file)
 
         self.train = self.Data(trn)
@@ -32,7 +32,7 @@ class AdultDataset:
         plt.show()
 
     def get_stats(self):
-      file="datasets/adult_cleaned.csv"
+      file="datasets/adult_subset.csv"
       trn, val, test = load_data(file)
       data = np.vstack((trn, val))
       mu = data.mean(axis=0)
@@ -41,6 +41,7 @@ class AdultDataset:
 
 def load_data(root_path):
     data = np.genfromtxt(root_path, delimiter=',', skip_header=1)
+    print('Shape of Subset Adult Dataset is', data.shape)
     rng = np.random.RandomState(42)
     rng.shuffle(data)
     N_test = int(0.1 * data.shape[0])
