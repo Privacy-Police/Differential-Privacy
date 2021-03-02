@@ -13,7 +13,7 @@ class PUMSDataset:
             self.N = self.x.shape[0]
 
     def __init__(self):
-        file="datasets/pums_cleaned.csv"
+        file="datasets/pums_subset.csv"
         trn, val, tst = load_data_normalised(file)
 
         self.train = self.Data(trn)
@@ -34,6 +34,7 @@ class PUMSDataset:
 
 def load_data(root_path):
     data = np.genfromtxt(root_path, delimiter=',', skip_header=1)
+    print('Shape of Subset PUMS Dataset is', data.shape)
     rng = np.random.RandomState(42)
     rng.shuffle(data)
     N_test = int(0.1 * data.shape[0])

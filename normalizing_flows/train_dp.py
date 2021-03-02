@@ -12,7 +12,6 @@ import flows as fnn
 from dataset_loader import get_datasets, get_input_size
 import patch_opacus
 
-
 wandb.init(project='privacy_police')
 config = wandb.config
 
