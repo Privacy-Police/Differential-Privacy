@@ -12,7 +12,7 @@ def main(args):
     device = torch.device("cuda" if gpu_available else "cpu")
     
     n_dims = get_input_size(args.dataset_name)
-    inputs = torch.Tensor(args.n_samples, n_dims).normal_().to('cuda')
+    inputs = torch.Tensor(args.n_samples, n_dims).normal_().to(device)
     model = torch.load(args.model_path)
     
     model.to(device)
