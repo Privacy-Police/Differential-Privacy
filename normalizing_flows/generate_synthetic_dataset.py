@@ -7,12 +7,14 @@ from dataset_loader import get_input_size, get_dataset_stats
 import flows as fnn
 
 def main(args):
+
+    gpu_available = args.use_cuda and torch.cuda.is_available()
+    device = torch.device("cuda" if gpu_available else "cpu")
+    
     n_dims = get_input_size(args.dataset_name)
     inputs = torch.Tensor(args.n_samples, n_dims).normal_().to('cuda')
     model = torch.load(args.model_path)
     
-    gpu_available = args.use_cuda and torch.cuda.is_available()
-    device = torch.device("cuda" if gpu_available else "cpu")
     model.to(device)
     with torch.no_grad():
         for module in reversed(model._modules.values()):
