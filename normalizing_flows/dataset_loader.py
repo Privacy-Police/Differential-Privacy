@@ -77,6 +77,12 @@ def get_input_size(dataset_name):
 
 def get_adult_stats():
     return adult.AdultDataset().get_stats()
+    
+def get_pums_stats():
+    return pums.PUMSDataset().get_stats()
+    
+def get_power_stats():
+    return power.PowerDataset().get_stats()
   
 def get_dataset_stats(dataset_name):
     """
@@ -84,7 +90,9 @@ def get_dataset_stats(dataset_name):
     """
     dataset_name = dataset_name.lower()
     mapping = {
-        'adult': get_adult_stats
+        'adult': get_adult_stats,
+        'pums': get_pums_stats,
+        'power': get_power_stats
     }
     if dataset_name not in mapping:
         err_msg = f"Unknown dataset '{dataset_name}'. Please choose one in {list(mapping.keys())}."

@@ -30,6 +30,14 @@ class PUMSDataset:
 
         util.plot_hist_marginals(data_split.x)
         plt.show()
+        
+    def get_stats(self):
+      file="datasets/pums_subset.csv"
+      trn, val, test = load_data(file)
+      data = np.vstack((trn, val))
+      mu = data.mean(axis=0)
+      s = data.std(axis=0)
+      return mu, s
 
 
 def load_data(root_path):

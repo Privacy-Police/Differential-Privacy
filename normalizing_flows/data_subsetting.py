@@ -17,22 +17,22 @@ adult = pd.DataFrame(adult)
 print(adult.shape)
 ## Sampling 3k rows with fixed seed
 adult_sf = adult.sample(n=3000,replace=False,random_state=42)
-adult_sf.to_csv('datasets/adult_subset.csv')
+adult_sf.to_csv('datasets/adult_subset.csv', index=False)
 print(adult_sf.shape)
 print('Adult Dataset is Subset')
 
 
 """
     For PUMS Dataset
-    In the following lines, we are subseting Adult dataset to 3k rows
+    In the following lines, we are subseting PUMS dataset to 3k rows
 """
-# Getting Adult Dataset
+# Getting PUMS Dataset
 pums = np.genfromtxt('datasets/pums_cleaned.csv', delimiter=',', skip_header=1)
 pums = pd.DataFrame(pums)
 print(pums.shape)
 ## Sampling 3k rows with fixed seed
 pums_sf = pums.sample(n=3000, replace=False, random_state=42)
-pums_sf.to_csv('datasets/pums_subset.csv')
+pums_sf.to_csv('datasets/pums_subset.csv', index=False)
 print(pums_sf.shape)
 print('PUMS Dataset is Subsetted')
 
@@ -47,7 +47,7 @@ power = pd.DataFrame(power)
 print(power.shape)
 ## Sampling 3k rows with fixed seed
 power_sf = power.sample(n=3000, replace=False, random_state=42)
-power_sf.to_csv('datasets/power_subset.csv')
+power_sf.to_csv('datasets/power_subset.csv', index=False)
 print(power_sf.shape)
 print('POWER Dataset is Subsetted')
 
