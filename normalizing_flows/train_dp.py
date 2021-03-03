@@ -20,6 +20,10 @@ def main(args):
     for key, value in vars(args).items():
         setattr(config, key, value)
 
+    # Set virtual_batch_size = batch_size
+    args.virtual_batch_size = args.batch_size
+    print('Setting virtual_batch_size to', args.batch_size)
+
     # Use CUDA GPU if available
     gpu_available = args.use_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if gpu_available else "cpu")
@@ -137,8 +141,8 @@ if __name__ == "__main__":
     parser.add_argument('--dataset_name', default='mnist', type=str, help="Dataset name to train on")
     parser.add_argument('--epoch', default=1000, type=int, help="number of epochs to train")
     parser.add_argument('--seed', default=42, type=int, help='Random seed for reproducibility')
-    parser.add_argument('--batch_size', default=128, type=int, help="Batch size for training model")
-    parser.add_argument('--virtual_batch_size', default=16, type=int, help="Virtual Batch size for training model via Opacus")
+    parser.add_argument('--batch_size', default=256, type=int, help="Batch size for training model")
+    parser.add_argument('--virtual_batch_size', default=256, type=int, help="Virtual Batch size for training model via Opacus")
     parser.add_argument('--learning_rate', default=1e-4, type=float, help="Learning rate for the optimizer")
     parser.add_argument('--weight_decay', default=1e-6, type=float, help="Weight decay for the optimizer")
     parser.add_argument('--made_blocks', default=5, type=int, help='Number of MADE blocks for the MAF model')
