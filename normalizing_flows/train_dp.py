@@ -30,7 +30,7 @@ def main(args):
 
     # Make dataloader
     train, val, test = dataset
-    train_loader = DataLoader(train, batch_size=args.batch_size, drop_last = True)
+    train_loader = DataLoader(train, batch_size=args.virtual_batch_size, drop_last = True)
     val_loader = DataLoader(val, batch_size=args.batch_size, drop_last = True)
     test_loader = DataLoader(test, batch_size=args.batch_size, drop_last = True)
 
@@ -58,19 +58,21 @@ def main(args):
         secure_rng=args.secure_rng,
       )
       privacy_engine.attach(optimizer)
-    
+
+    # Figure out batch multiplier
+    batch_multiplier = args.batch_size / args.virtual_batch_size
+
     # Train model
     best_validation_loss = float('inf')
     consecutive_bad_count = 0
-    model.train()
     for epoch_num in range(1, args.epoch+1):
         start = time.time()
         # Train for 1 epoch
         train_loss = 0
-        if args.dataset_name == 'mnist':
-          for batch, _ in train_loader:
+        model.train()
+        for i, batch in enumerate(train_loader):
+            batch = batch[0] if args.dataset_name == 'mnist' else batch
             batch = batch.to(device)
-            optimizer.zero_grad()
 
             # Loss = Negative Log Likelihood
             loss = -model.log_probs(batch).mean()
@@ -78,40 +80,31 @@ def main(args):
 
             # Backpropagation
             loss.backward()
-            optimizer.step()
-        else:
-          for batch in train_loader:
-            batch = batch.to(device)
-            optimizer.zero_grad()
+            if i % batch_multiplier == batch_multiplier - 1:
+                optimizer.step()
+                optimizer.zero_grad()
+            else:
+                optimizer.virtual_step()
 
-            # Loss = Negative Log Likelihood
-            loss = -model.log_probs(batch).mean()
-            train_loss += loss.item()
-
-            # Backpropagation
-            loss.backward()
-            optimizer.step()
         avg_loss = np.sum(train_loss) / len(train_loader)
 
         # Validation
         val_loss = 0
-        if args.dataset_name == 'mnist':
-          for batch, _ in val_loader:
-            batch = batch.to(device)
-            val_loss += -model.log_probs(batch).mean().item()
-        else:
-          for batch in val_loader:
+        model.eval()
+        for batch in val_loader:
+            batch = batch[0] if args.dataset_name == 'mnist' else batch
             batch = batch.to(device)
             val_loss += -model.log_probs(batch).mean().item()
         avg_val_loss = np.sum(val_loss) / len(val_loader)
 
         end = time.time()
         duration = (end-start)/60
-        
+
         if args.enable_dp:
           epsilon, best_alpha = optimizer.privacy_engine.get_privacy_spent(args.delta)
         else:
-          epsilon, best_alpha = None
+          epsilon, best_alpha = None, None
+
         # Log statistics to wandb and stdout
         description = f'Epoch {epoch_num:3} | duration: {duration:12.5f}| train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {epsilon:12.5f} | best alpha: {best_alpha:12.5f}'
         print(description)
@@ -133,7 +126,7 @@ def main(args):
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")   
+    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")
     print("Model saved successfully in saved_models/" + args.dataset_name + "_trained_dp_model.pt")
 
 
@@ -145,6 +138,7 @@ if __name__ == "__main__":
     parser.add_argument('--epoch', default=1000, type=int, help="number of epochs to train")
     parser.add_argument('--seed', default=42, type=int, help='Random seed for reproducibility')
     parser.add_argument('--batch_size', default=128, type=int, help="Batch size for training model")
+    parser.add_argument('--virtual_batch_size', default=16, type=int, help="Virtual Batch size for training model via Opacus")
     parser.add_argument('--learning_rate', default=1e-4, type=float, help="Learning rate for the optimizer")
     parser.add_argument('--weight_decay', default=1e-6, type=float, help="Weight decay for the optimizer")
     parser.add_argument('--made_blocks', default=5, type=int, help='Number of MADE blocks for the MAF model')
