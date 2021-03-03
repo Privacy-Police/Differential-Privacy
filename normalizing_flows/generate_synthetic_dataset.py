@@ -16,6 +16,7 @@ def main(args):
     model = torch.load(args.model_path)
     
     model.to(device)
+    model.eval()
     with torch.no_grad():
         for module in reversed(model._modules.values()):
             if isinstance(module, fnn.Reverse):

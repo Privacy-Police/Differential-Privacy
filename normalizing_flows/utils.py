@@ -13,6 +13,7 @@ def get_distribution_diagnostic_plot(model_path, input, data_name = 'MNIST', mod
   model = torch.load(model_path, map_location=torch.device(device))
 
   model.to(device)
+  model.eval()
   u = model(input.to(device))[0].detach().cpu().numpy()
 
   fig, axes = plt.subplots(
@@ -32,6 +33,7 @@ def get_distribution_diagnostic_plot(model_path, input, data_name = 'MNIST', mod
 def get_scattered_diagnostic_plot(model_path, input, data_name = 'MNIST', model_name = 'maf', ncols = 6, nrows = 4):
   model = torch.load(model_path, map_location=torch.device(device))
   model.to(device)
+  model.eval()
   u = model(input.to(device))[0].detach().cpu().numpy()
   
   fig, axes = plt.subplots(
