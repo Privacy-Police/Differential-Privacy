@@ -15,7 +15,7 @@ class BasicSynthesizer:
         self.columns = {} # column_name : Distribution
         for column_name, _ in self.dataset.iteritems():
             column = self.dataset[column_name]
-            if str(column.dtype) == 'int64':
+            if str(column.dtype) == 'int64' or str(column.dtype) == 'float64':
                 self.columns[column_name] = GaussianDistribution(column)
             elif str(column.dtype) == 'object':
                 self.columns[column_name] = CategoricalDistribution(column)
