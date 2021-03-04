@@ -20,6 +20,10 @@ def main(args):
     for key, value in vars(args).items():
         setattr(config, key, value)
 
+    # Set random seed
+    torch.manual_seed(args.seed)
+    np.random.seed(args.seed)
+
     # Set virtual_batch_size = batch_size
     args.virtual_batch_size = args.batch_size
     print('Setting virtual_batch_size to', args.batch_size)
