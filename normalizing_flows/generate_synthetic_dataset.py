@@ -48,9 +48,9 @@ def main(args):
         data = normalized_data
     print(data)
     output_norm_str = "_normal" if not args.denormalize else ""
-    output_path = 'synth_data/synth_'+args.dataset_name + output_norm_str+ '.csv'
+    output_path = 'synth_data/synth_' + args.dataset_name + output_norm_str + '.csv'
     pd.DataFrame(data).to_csv(output_path)
-    print("Data successfully saved to ", output_path)
+    print("Data successfully saved to", output_path)
       
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script to generate synthetic dataset")

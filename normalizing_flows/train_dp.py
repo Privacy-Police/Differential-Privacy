@@ -134,8 +134,10 @@ def main(args):
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-    torch.save(model, "saved_models/" + args.dataset_name + "_trained_dp_model.pt")
-    print("Model saved successfully in saved_models/" + args.dataset_name + "_trained_dp_model.pt")
+    output_dp_str = "_dp" if enable_dp else ""
+    output_model_path = "saved_models/" + args.dataset_name + "_trained" + output_dp_str + "_model.pt"
+    torch.save(model, output_model_path)
+    print("Model saved successfully to", output_model_path)
 
 
 if __name__ == "__main__":
@@ -151,9 +153,10 @@ if __name__ == "__main__":
     parser.add_argument('--weight_decay', default=1e-6, type=float, help="Weight decay for the optimizer")
     parser.add_argument('--made_blocks', default=5, type=int, help='Number of MADE blocks for the MAF model')
     parser.add_argument('--hidden_dims', default=512, type=int, help='Number of nodes for hidden layers for each MADE block')
-    parser.add_argument('--enable_dp', default=True, type=bool, help='Whether to train model with Differential Privacy (DP) constraints. True for DP')
+    parser.add_argument('--disable_dp', dest= enable_dp, action='store_false', help='Disables training model with DP')
+    parser.set_defaults(enable_dp=True)
     parser.add_argument('--sigma', default=1.0, type=float, help='Noise multiplier (default 1.0)')
-    parser.add_argument('----max-per-sample-grad_norm', default=1.0, type=float, help='Clip per-sample gradients to this norm (default 1.0)')
+    parser.add_argument('--max-per-sample-grad_norm', default=1.0, type=float, help='Clip per-sample gradients to this norm (default 1.0)')
     parser.add_argument('--secure_rng', default=False, type=bool, help='Enable Secure RNG to have trustworthy privacy guarantees. Comes at a performance cost')
     parser.add_argument('--delta', default=1e-5, type=float, help="Target delta (default: 1e-5)")
     args = parser.parse_args()
