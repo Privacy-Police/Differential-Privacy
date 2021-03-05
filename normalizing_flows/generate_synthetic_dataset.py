@@ -13,7 +13,7 @@ def main(args):
     
     n_dims = get_input_size(args.dataset_name)
     inputs = torch.Tensor(args.n_samples, n_dims).normal_().to(device)
-    model = torch.load(args.model_path)
+    model = torch.load(args.model_path, map_location=device)
     
     model.to(device)
     model.eval()
@@ -39,13 +39,18 @@ def main(args):
             else:
                 raise ValueError("Unknown module type in the flow: {0}".format(type(module)))
     normalized_data = inputs.detach().cpu().numpy()
-    mu, s = get_dataset_stats(args.dataset_name)
-    print("Mean and stdev: " , mu, s)
-    print("--------------------")
-    data = (normalized_data * s) + mu
+    if args.denormalize:
+        mu, s = get_dataset_stats(args.dataset_name)
+        print("Mean and stdev of original data: " , mu, s)
+        print("Denormalizing the synthetic data...")
+        data = (normalized_data * s) + mu
+    else:
+        data = normalized_data
     print(data)
-    pd.DataFrame(data).to_csv('synth_data/synth_'+args.dataset_name + '.csv')
-    print("Data successfully saved to ", 'synth_data/synth_'+args.dataset_name + '.csv')
+    output_norm_str = "_normal" if not args.denormalize else ""
+    output_path = 'synth_data/synth_' + args.dataset_name + output_norm_str + '.csv'
+    pd.DataFrame(data).to_csv(output_path)
+    print("Data successfully saved to", output_path)
       
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Script to generate synthetic dataset")
@@ -53,5 +58,7 @@ if __name__ == "__main__":
     parser.add_argument('--dataset_name', type=str, required=True, help="Dataset name to train on")
     parser.add_argument('--n_samples', default=10, type=int, help="Number of rows of synthetic data to be generated")
     parser.add_argument('--model_path', default='./saved_models/mnist_trained_model.pt', type=str, help='File path to the saved model')
+    parser.add_argument('--denormalize', dest='denormalize', action='store_true', help="Denormalizes the data (scales to original domain)")
+    parser.set_defaults(denormalize=False)
     args = parser.parse_args()
     main(args)
