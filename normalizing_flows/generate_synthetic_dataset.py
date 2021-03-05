@@ -49,7 +49,7 @@ def main(args):
     print(data)
     output_norm_str = "_normal" if not args.denormalize else ""
     output_path = 'synth_data/synth_' + args.dataset_name + output_norm_str + '.csv'
-    pd.DataFrame(data).to_csv(output_path)
+    pd.DataFrame(data).to_csv(output_path, index=False)
     print("Data successfully saved to", output_path)
       
 if __name__ == "__main__":

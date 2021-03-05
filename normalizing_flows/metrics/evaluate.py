@@ -12,7 +12,7 @@ from pmse import pmse_ratio
 def main(args):
     orig_data = pd.read_csv(args.path_to_real)
     synth_data = pd.read_csv(args.path_to_synth)
-    synth_data = synth_data.replace([-np.Inf, np.inf], np.nan).drop(synth_data.columns[0], axis=1).dropna()
+    synth_data = synth_data.replace([-np.Inf, np.inf], np.nan).dropna()
     synth_data = synth_data[:orig_data.shape[0]]
     sra = run_sra(orig_data, synth_data)
     wass_mu, wass_std = run_wasserstein(orig_data, synth_data)
