@@ -15,8 +15,10 @@ def main(args):
     data = next(iter(test_loader))[0]
   else:
     data = next(iter(test_loader))
-  get_distribution_diagnostic_plot(args.model_path, data)
-  get_scattered_diagnostic_plot(args.model_path, data)
+  # print('get_distribution_plot', args.model_path, args.data_name)
+  get_distribution_diagnostic_plot(args.model_path, data, args.data_name)
+  # print('get_scattered_diagnostic_plot')
+  get_scattered_diagnostic_plot(args.model_path, data, args.data_name)
 
 
 if __name__ == "__main__":
