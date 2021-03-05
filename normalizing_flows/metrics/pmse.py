@@ -32,7 +32,7 @@ def pmse_ratio(data, synthetic_data):
     X_comb = comb.drop('indicator', axis=1)
     y_comb = comb['indicator']
     X_train, X_test, y_train, y_test = train_test_split(X_comb, y_comb, test_size=0.33, random_state=42)
-    clf = LogisticRegression(random_state=0).fit(X_train, y_train)
+    clf = LogisticRegression(random_state=0, max_iter=500).fit(X_train, y_train)
     score = clf.predict_proba(X_comb)[:, 1]
     observed_utility = sum((score - n2/(n1+n2))**2) / (n1+n2)
     expected_utility = clf.coef_.shape[1] * (n1/(n1+n2))**2 * (n2/(n1+n2)) / (n1+n2)
