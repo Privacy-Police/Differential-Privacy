@@ -134,7 +134,7 @@ def main(args):
         if consecutive_bad_count >= args.patience:
             print(f'No improvement for {args.patience} epochs. Early stopping...')
             break
-    output_dp_str = "_dp" if enable_dp else ""
+    output_dp_str = "_dp" if args.enable_dp else ""
     output_model_path = "saved_models/" + args.dataset_name + "_trained" + output_dp_str + "_model.pt"
     torch.save(model, output_model_path)
     print("Model saved successfully to", output_model_path)
