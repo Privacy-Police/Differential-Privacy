@@ -20,7 +20,7 @@ python train_dp.py
 #### Generating Diagnostic Plots
 
 ```
-python generate
+python evaluate_diagnostics.py --model_path <model_file_to_use> --data_name <dataset_name>
 ```
 
 #### Generating Synthetic Datasets
