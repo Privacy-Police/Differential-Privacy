@@ -6,6 +6,9 @@ This repository contains the code and scripts to train models that generate diff
 
 ### How to run the code
 
+All the codes related to the basic synthesizer can be found in the [basic_synthesizer](./basic_synthesizer) directory. The directory also contains example notebooks that demonstrate how to generate the synthetic datasets and test the performance metrics for the basic synthesizer (eg: [adult dataset example](./basic_synthesizer/adult_sample.ipynb)).
+
+All the scripts to train the Differentially Private Normalizing Flows model are located in the [normalizing_flows](./normalizing_flows) directory.
 Each of the scripts contain various options to run the code. Please run `python <script>.py --help` to see all the options before running the code.
 
 #### Training the Model
