@@ -2,11 +2,11 @@
 
 This repository contains the code and scripts to train models that generate differentially private synthetic data from original datasets containing confidential and/or sensitive data. The model is based on the Masked Autoregressive Flows (MAF) architecture and Differentially Private Stochastic Gradient Descent (DP-SGD). The code is implemented in Pytorch and uses the [Opacus](https://opacus.ai/) library for Differential Privacy.
 
-## System Requirements
+### System Requirements
 
-## How to Run
+### How to Run
 
-## Results & Figures
+### Results & Figures
 
 ### License
 This code is available under the [MIT License](./LICENSE).
