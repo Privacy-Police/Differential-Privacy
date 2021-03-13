@@ -7,7 +7,7 @@ from dataset_loader import get_input_size, get_dataset_stats
 import flows as fnn
 
 def main(args):
-
+    
     gpu_available = args.use_cuda and torch.cuda.is_available()
     device = torch.device("cuda" if gpu_available else "cpu")
     
@@ -17,6 +17,8 @@ def main(args):
     
     model.to(device)
     model.eval()
+    
+    # Backpropagate through all the modules in the MAF model (MADE, Reverse and BatchNormFlow)
     with torch.no_grad():
         for module in reversed(model._modules.values()):
             if isinstance(module, fnn.Reverse):
@@ -39,14 +41,16 @@ def main(args):
             else:
                 raise ValueError("Unknown module type in the flow: {0}".format(type(module)))
     normalized_data = inputs.detach().cpu().numpy()
+    
     if args.denormalize:
+        # Use mean and standard deviation of train and validation datasets to denormalize the data
         mu, s = get_dataset_stats(args.dataset_name)
         print("Mean and stdev of original data: " , mu, s)
         print("Denormalizing the synthetic data...")
         data = (normalized_data * s) + mu
     else:
         data = normalized_data
-    print(data)
+        
     output_norm_str = "_normal" if not args.denormalize else ""
     output_path = 'synth_data/synth_' + args.dataset_name + output_norm_str + '.csv'
     pd.DataFrame(data).to_csv(output_path, index=False)

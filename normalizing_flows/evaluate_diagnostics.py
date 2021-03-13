@@ -6,6 +6,9 @@ from torch.utils.data import DataLoader
 import flows
 
 def main(args): 
+  # Loading the test dataset to generate the diagnostic plots to test the model assumptions
+  # Model assumptions: The base simple distribution follows multivariate gaussian distribution
+  # Pairwise scatter plots should show uniformly distributed circular clusters, distribution plots should look gaussian
   dataset = get_datasets(args.data_name, 42)
   train, val, test = dataset
   train_loader = DataLoader(train, batch_size=100)
@@ -15,8 +18,10 @@ def main(args):
     data = next(iter(test_loader))[0]
   else:
     data = next(iter(test_loader))
+    
   # print('get_distribution_plot', args.model_path, args.data_name)
   get_distribution_diagnostic_plot(args.model_path, data, args.data_name)
+  
   # print('get_scattered_diagnostic_plot')
   get_scattered_diagnostic_plot(args.model_path, data, args.data_name)
 
