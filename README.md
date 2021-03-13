@@ -13,13 +13,30 @@ Each of the scripts contain various options to run the code. Please run `python 
 
 #### Training the Model
 
+```
+python train_dp.py
+```
+
 #### Generating Diagnostic Plots
+
+```
+python generate
+```
 
 #### Generating Synthetic Datasets
 
+```
+python generate_synthetic_dataset.py
+```
+
 #### Evaluating Performance Metrics
 
+```
+python metrics/evaluate.py
+```
+
 ### Results & Figures
+
 
 ### License
 This code is available under the [MIT License](./LICENSE).
