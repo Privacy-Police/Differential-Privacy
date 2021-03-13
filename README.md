@@ -4,7 +4,17 @@ This repository contains the code and scripts to train models that generate diff
 
 ### System Requirements
 
-### How to Run
+### How to run the code
+
+Each of the scripts contain various options to run the code. Please run `python <script>.py --help` to see all the options before running the code.
+
+#### Training the Model
+
+#### Generating Diagnostic Plots
+
+#### Generating Synthetic Datasets
+
+#### Evaluating Performance Metrics
 
 ### Results & Figures
 
