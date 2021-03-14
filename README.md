@@ -4,6 +4,8 @@ This repository contains the code and scripts to train models that generate diff
 
 ### System Requirements
 
+All of the scripts are tested to run in Google Colab, which uses Python 3.7.10 version (with GPU option). We also tested to run locally in Macbook Pro environment with Python 3.7.9 version (CPU option). However, we believe any Python version greater than or equal to 3.6 should work.
+
 #### Install dependencies
 
 ```
