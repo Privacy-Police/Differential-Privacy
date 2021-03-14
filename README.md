@@ -45,6 +45,15 @@ $ python metrics/evaluate.py
 
 #### Model Diagnostics
 
+The underlying assumption of our Normalizing Flows model is that the base known density follows a multivariate gaussian distribution. In order to validate whether our model satisfies this assumption, we use our test dataset and backpropagate it through the model to obtain `u` (the base known data). Then we plot the distribution plots and pairwise scatterplots for the `u` obtained for the attributes. We expect the distribution plots to appear normal and the scatterplots should show a uniformly spread circular cluster in the middle.
+
+The diagnostic plots for all the datasets can be found [here](/normalizing_flows/figs/subset_dp_models/diagnostic_plots).
+
+Distribution Plot for PUMS            |  Pairwise Scatterplots for PUMS
+:-------------------------:|:-------------------------:
+![](normalizing_flows/figs/subset_dp_models/diagnostic_plots/maf_pums_marginal.png)  |  ![](normalizing_flows/figs/subset_dp_models/diagnostic_plots/maf_pums_scatter.png)  |
+
+
 #### Synthetic Data vs Real Data
 
 The side by side histograms betwen synthetic data vs real data is available in the following [directory](/normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth). All of the columns for the three datasets are available in that directory. Here are some notable columns within all the histograms.
