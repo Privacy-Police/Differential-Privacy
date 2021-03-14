@@ -52,3 +52,12 @@ def get_scattered_diagnostic_plot(model_path, input, data_name = 'MNIST', model_
   fig.suptitle("Scatter plot for " + data_name + " Dataset", fontsize = 13)
   plt.savefig("figs/" + model_name + "_" + data_name + "_scatter.png", dpi=300)
   plt.savefig("figs/" + model_name + "_" + data_name + "_scatter.pdf", dpi=300)
+
+
+def print_configs(args, wandb):
+    print('Printing configuration...')
+    print('---------------------------------')
+    for key, value in vars(args).items():
+        setattr(wandb.config, key, value)
+        print(f'{key:25}: {value}')
+    print('---------------------------------')

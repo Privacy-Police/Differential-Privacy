@@ -10,23 +10,20 @@ from opacus import PrivacyEngine
 
 import flows as fnn
 from dataset_loader import get_datasets, get_input_size
+from utils import print_configs
 import patch_opacus
 
-wandb.init(project='privacy_police')
-config = wandb.config
 
 def main(args):
+    wandb_mode = 'online' if args.enable_wandb else 'disabled'
+    wandb.init(project='privacy_police', mode=wandb_mode)
+
     # Pass config to wandb
-    for key, value in vars(args).items():
-        setattr(config, key, value)
+    print_configs(args, wandb)
 
     # Set random seed
     torch.manual_seed(args.seed)
     np.random.seed(args.seed)
-
-    # Set virtual_batch_size = batch_size
-    args.virtual_batch_size = args.batch_size
-    print('Setting virtual_batch_size to', args.batch_size)
 
     # Use CUDA GPU if available
     gpu_available = args.use_cuda and torch.cuda.is_available()
@@ -108,10 +105,10 @@ def main(args):
         end = time.time()
         duration = (end-start)/60
 
+        # Log epsilon and alpha
+        epsilon, best_alpha = 0, 0
         if args.enable_dp:
           epsilon, best_alpha = optimizer.privacy_engine.get_privacy_spent(args.delta)
-        else:
-          epsilon, best_alpha = None, None
 
         # Log statistics to wandb and stdout
         description = f'Epoch {epoch_num:3} | duration: {duration:12.5f}| train LL: {-avg_loss:12.5f} | val LL: {-avg_val_loss:12.5f} | epsilon: {epsilon:12.5f} | best alpha: {best_alpha:12.5f}'
@@ -153,11 +150,11 @@ if __name__ == "__main__":
     parser.add_argument('--weight_decay', default=1e-6, type=float, help="Weight decay for the optimizer")
     parser.add_argument('--made_blocks', default=5, type=int, help='Number of MADE blocks for the MAF model')
     parser.add_argument('--hidden_dims', default=512, type=int, help='Number of nodes for hidden layers for each MADE block')
-    parser.add_argument('--disable_dp', dest= 'enable_dp', action='store_false', help='Disables training model with DP')
-    parser.set_defaults(enable_dp=True)
+    parser.add_argument('--enable_dp', action='store_false', help='Disables training model with DP')
     parser.add_argument('--sigma', default=1.0, type=float, help='Noise multiplier (default 1.0)')
     parser.add_argument('--max-per-sample-grad_norm', default=1.0, type=float, help='Clip per-sample gradients to this norm (default 1.0)')
     parser.add_argument('--secure_rng', default=False, type=bool, help='Enable Secure RNG to have trustworthy privacy guarantees. Comes at a performance cost')
     parser.add_argument('--delta', default=1e-5, type=float, help="Target delta (default: 1e-5)")
+    parser.add_argument('--enable_wandb', action='store_true', help="Enable wandb for logging experiments. Default is False")
     args = parser.parse_args()
     main(args)
