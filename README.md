@@ -14,7 +14,7 @@ $ pip install -r requirements.txt
 
 All the codes related to the basic synthesizer can be found in the [basic_synthesizer](./basic_synthesizer) directory. The directory also contains example notebooks that demonstrate how to generate the synthetic datasets and test the performance metrics for the basic synthesizer (eg: [adult dataset example](./basic_synthesizer/adult_sample.ipynb)).
 
-All the scripts to train the Differentially Private Normalizing Flows model are located in the [normalizing_flows](./normalizing_flows) directory.
+All the scripts to train the Differentially Private Normalizing Flows model are located in the this root directory.
 Each of the scripts contain various options to run the code. Please run `python <script>.py --help` to see all the options before running the code.
 
 #### Training the Model
@@ -54,19 +54,19 @@ $ python generate_histograms.py
 
 The underlying assumption of our Normalizing Flows model is that the base known density follows a multivariate gaussian distribution. In order to validate whether our model satisfies this assumption, we use our test dataset and backpropagate it through the model to obtain `u` (the base known data). Then we plot the distribution plots and pairwise scatterplots for the `u` obtained for the attributes. We expect the distribution plots to appear normal and the scatterplots should show a uniformly spread circular cluster in the middle.
 
-The diagnostic plots for all the datasets can be found [here](/normalizing_flows/figs/subset_dp_models/diagnostic_plots).
+The diagnostic plots for all the datasets can be found [here](/figs/subset_dp_models/diagnostic_plots).
 
 Distribution Plot for PUMS            |  Pairwise Scatterplots for PUMS
 :-------------------------:|:-------------------------:
-![](normalizing_flows/figs/subset_dp_models/diagnostic_plots/maf_pums_marginal.png)  |  ![](normalizing_flows/figs/subset_dp_models/diagnostic_plots/maf_pums_scatter.png)  |
+![](figs/subset_dp_models/diagnostic_plots/maf_pums_marginal.png)  |  ![](figs/subset_dp_models/diagnostic_plots/maf_pums_scatter.png)  |
 
 
 #### Synthetic Data vs Real Data
 
-The side by side histograms betwen synthetic data vs real data is available in the following [directory](/normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth). All of the columns for the three datasets are available in that directory. Here are some notable columns within all the histograms.
+The side by side histograms betwen synthetic data vs real data is available in the following [directory](/figs/subset_dp_models/histograms_real_vs_synth). All of the columns for the three datasets are available in that directory. Here are some notable columns within all the histograms.
 POWER-voltage             |  Adult-age          |  PUMS-education
 :-------------------------:|:-------------------------:|:-------------------------:
-![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/power_2.png)  |  ![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/adult_0.png)  | ![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/pums_2.png)
+![](figs/subset_dp_models/histograms_real_vs_synth/power_2.png)  |  ![](figs/subset_dp_models/histograms_real_vs_synth/adult_0.png)  | ![](figs/subset_dp_models/histograms_real_vs_synth/pums_2.png)
 
 
 #### Performance Metrics
