@@ -14,7 +14,7 @@ Each of the scripts contain various options to run the code. Please run `python 
 #### Training the Model
 
 ```
-python train_dp.py
+python train.py
 ```
 
 #### Generating Diagnostic Plots
