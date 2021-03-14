@@ -7,7 +7,7 @@ This repository contains the code and scripts to train models that generate diff
 #### Install dependencies
 
 ```
-pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ### How to run the code
@@ -20,25 +20,25 @@ Each of the scripts contain various options to run the code. Please run `python 
 #### Training the Model
 
 ```
-python train.py
+$ python train.py
 ```
 
 #### Generating Diagnostic Plots
 
 ```
-python evaluate_diagnostics.py --model_path <model_file_to_use> --data_name <dataset_name>
+$ python evaluate_diagnostics.py --model_path <model_file_to_use> --data_name <dataset_name>
 ```
 
 #### Generating Synthetic Datasets
 
 ```
-python generate_synthetic_dataset.py
+$ python generate_synthetic_dataset.py
 ```
 
 #### Evaluating Performance Metrics
 
 ```
-python metrics/evaluate.py
+$ python metrics/evaluate.py
 ```
 
 ### Results & Figures
