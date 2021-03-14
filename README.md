@@ -47,7 +47,7 @@ $ python metrics/evaluate.py
 
 #### Synthetic Data vs Real Data
 
-The side by side histograms betwen synthetic data vs real data is available in the following [directory](/normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth). Here are some notable columns within the datasets.
+The side by side histograms betwen synthetic data vs real data is available in the following [directory](/normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth). All of the columns for the three datasets are available in that directory. Here are some notable columns within all the histograms.
 POWER-voltage             |  Adult-age          |  PUMS-education
 :-------------------------:|:-------------------------:|:-------------------------:
 ![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/power_2.png)  |  ![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/adult_0.png)  | ![](normalizing_flows/figs/subset_dp_models/histograms_real_vs_synth/pums_2.png)
