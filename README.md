@@ -7,7 +7,6 @@ This repository contains the code and scripts to train models that generate diff
 #### Install dependencies
 
 ```
-$ cd normalizing_flows
 $ pip install -r requirements.txt
 ```
 
@@ -43,6 +42,18 @@ $ python metrics/evaluate.py
 ```
 
 ### Results & Figures
+
+#### Model Diagnostics
+
+#### Synthetic Data vs Real Data
+
+#### Performance Metrics
+
+| Dataset | Synthetic Ranking Agreement (SRA) | Wasserstein Ratio | PMSE Ratio |
+|--------|-------------|--------|-------------|
+| Adult | 0.6 | 0.0834242461170728 | 1.8946310091511434 |
+| PUMS | 0.167 | 0.09347821825410683 | 0.7843632529397099 |
+| Power | 0.71| 0.08383793714390242 | 0.58380044264653 |
 
 
 ### License
