@@ -41,6 +41,13 @@ $ python generate_synthetic_dataset.py
 $ python metrics/evaluate.py
 ```
 
+#### Generating Histogram plots
+
+```
+$ python generate_histograms.py
+```
+
+
 ### Results & Figures
 
 #### Model Diagnostics
