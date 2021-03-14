@@ -43,6 +43,18 @@ $ python metrics/evaluate.py
 
 ### Results & Figures
 
+#### Model Diagnostics
+
+#### Synthetic Data vs Real Data
+
+#### Performance Metrics
+
+| Dataset | Synthetic Ranking Agreement (SRA) | Wasserstein Ratio | PMSE Ratio |
+|--------|-------------|--------|-------------|
+| Adult | 0.6 | 0.0834 | 1.8946 |
+| PUMS | 0.167 | 0.0934 | 0.7844 |
+| Power | 0.71| 0.0838 | 0.5838 |
+
 
 ### License
 This code is available under the [MIT License](./LICENSE).
