@@ -4,6 +4,12 @@ This repository contains the code and scripts to train models that generate diff
 
 ### System Requirements
 
+#### Install dependencies
+
+```
+pip install -r requirements.txt
+```
+
 ### How to run the code
 
 All the codes related to the basic synthesizer can be found in the [basic_synthesizer](./basic_synthesizer) directory. The directory also contains example notebooks that demonstrate how to generate the synthetic datasets and test the performance metrics for the basic synthesizer (eg: [adult dataset example](./basic_synthesizer/adult_sample.ipynb)).
