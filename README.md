@@ -7,6 +7,7 @@ This repository contains the code and scripts to train models that generate diff
 #### Install dependencies
 
 ```
+$ cd normalizing_flows
 $ pip install -r requirements.txt
 ```
 
