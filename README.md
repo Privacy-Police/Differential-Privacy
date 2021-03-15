@@ -22,7 +22,7 @@ Each of the scripts contain various options to run the code. Please run `python 
 #### Training the Model
 
 ```
-$ python train.py
+$ python train.py --dataset_name <dataset_name>
 ```
 
 #### Generating Diagnostic Plots
@@ -33,14 +33,14 @@ $ python evaluate_diagnostics.py --model_path <model_file_to_use> --data_name <d
 
 #### Generating Synthetic Datasets
 
-```
-$ python generate_synthetic_dataset.py
+``` 
+$ python generate_synthetic_dataset.py --dataset_name <dataset_name> --model_path <file_path_to_model>
 ```
 
 #### Evaluating Performance Metrics
 
 ```
-$ python metrics/evaluate.py
+$ python metrics/evaluate.py --path_to_real <path_to_real_dataset>  --path_to_synth <path_to_synthetic_dataset>
 ```
 
 #### Generating Histogram plots
