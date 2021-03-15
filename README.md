@@ -73,12 +73,21 @@ POWER-voltage             |  Adult-age          |  PUMS-education
 
 #### Performance Metrics
 
+From the models trained with differentially private MAF architecture, we have generated synthetic datasets of 4000 rows for each of the three datasets. We have compared the performance of these synthetic datasets on the following 3 metrics: pMSE, SRA and Wasserstein distance. Following two tables presents the performance of datasets from basic synthesiser (no DP) and DP-trained models.
+
+| Basic Synthesiser Performance |
+| Dataset | Synthetic Ranking Agreement (SRA) | Wasserstein Ratio | PMSE Ratio |
+|--------|-------------|--------|-------------|
+| Adult | 1 | 0.147 | 0.999 |
+| PUMS | 1 | 0.142 | 0.658 |
+| Power | 0.999| 0.143 | 1.140 |
+
+| DP-trained Model |
 | Dataset | Synthetic Ranking Agreement (SRA) | Wasserstein Ratio | PMSE Ratio |
 |--------|-------------|--------|-------------|
 | Adult | 0.6 | 0.0834 | 1.8946 |
 | PUMS | 0.167 | 0.0934 | 0.7844 |
 | Power | 0.71| 0.0838 | 0.5838 |
-
 
 ### License
 This code is available under the [MIT License](./LICENSE).
