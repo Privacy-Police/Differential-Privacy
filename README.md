@@ -85,9 +85,9 @@ From the models trained with differentially private MAF architecture, we have ge
 **DP-MAF Model Performance**
 | Dataset | Synthetic Ranking Agreement (SRA) | Wasserstein Ratio | PMSE Ratio |
 |--------|-------------|--------|-------------|
-| Adult | 0.6 | 0.0834 | 1.8946 |
-| PUMS | 0.167 | 0.0934 | 0.7844 |
-| Power | 0.71| 0.0838 | 0.5838 |
+| Adult | 0.6 | 0.083 | 1.895 |
+| PUMS | 0.167 | 0.093 | 0.784 |
+| Power | 0.71| 0.084 | 0.584 |
 
 ### License
 This code is available under the [MIT License](./LICENSE).
